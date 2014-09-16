@@ -37,5 +37,6 @@ purge: clean
 	rm -rf *.log
 	rm -rf tex/*.tex~
 	rm -f Makefile~
+	rm Dissertation.pdf
 
 FORCE:
