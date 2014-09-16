@@ -1,0 +1,10 @@
+*~
+.*
+*.bak
+*.blg
+*.backup
+*.tgz
+/*.pdf
+/run
+/fig
+!.gitignore

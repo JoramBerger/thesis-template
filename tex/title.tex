@@ -1,0 +1,72 @@
+\newcommand{\diameter}{8mm}
+\newcommand{\rand}{10mm}
+\newcommand{\bkorr}{10mm} % e-version ohne bkorr
+\newcommand{\xone}{-1.0in-\oddsidemargin+\rand+\bkorr-3.8mm}
+\newcommand{\xtwo}{1.0\textwidth+2.0\oddsidemargin+1.0in-\rand+1.5mm}
+\newcommand{\yone}{\topmargin+\headheight+\headsep+1.0in+11pt-\rand}
+\newcommand{\ytwo}{-1.0\textheight-2.0\topmargin-1.0in-\footskip+\rand-4.4mm}
+
+\newcommand{\rahmen}{%
+\begin{tikzpicture}[overlay]
+\draw[color=gray]
+  (\xone, \yone) -- (\xtwo - \diameter, \yone)
+  arc (90:0:\diameter)
+  -- (\xtwo, \ytwo)
+  -- (\xone + \diameter, \ytwo)
+  arc (270:180:\diameter)
+  -- (\xone, \yone);
+\end{tikzpicture}
+}
+
+\begin{titlepage}
+\large % 11 -> 12pt
+% head
+\begin{textblock*}{\textwidth}(27mm,18mm) % bkorr + rand + dia, rand + dia
+		\includegraphics[width=3.5cm]{Kitlogo_de_cmyk}
+\end{textblock*}
+\begin{textblock*}{5cm}(142mm,13.7676mm)% 210-50-rand-dia,rand + dia
+\begin{flushright}
+\small
+%CERN-THESIS-2014-XXX\\
+IEKP-KA/2014-XXX
+\end{flushright}
+\end{textblock*}
+
+% title
+\begin{textblock*}{10.8cm}(5.1cm,6.05cm) % fix
+\begin{center}
+\LARGE \textsf{\textbf{%
+Title with Symbols X\boldmath${}\to\mu\mu$}}\\[1cm]
+\Large Name
+\end{center}
+\end{textblock*}
+
+% block
+\begin{textblock*}{15cm}(3cm, 13cm) % fix
+\begin{center}
+Zur Erlangung des akademischen Grades eines\\[0.5ex]
+\caps{DOKTORS DER NATURWISSENSCHAFTEN}\\[0.5ex]
+bei der Fakultät für Physik des\\
+KIT -- Karlsruher Institut für Technologie\\[0.5cm]
+
+eingereichte\\[0.5cm]
+%genehmigte\\[0.5cm]
+
+\caps{DISSERTATION}\\[0.6cm]
+von\\[0.3cm]
+Dipl.-Phys.\ Name\\[0.5ex]
+aus Geburtsort
+\end{center}
+\end{textblock*}
+
+% referee
+\begin{textblock*}{15cm}(33mm, 255mm) % bkorr + rand + dia + 6mm, arbitrary
+\noindent
+Tag der mündlichen Prüfung: Datum\\[1.5ex]
+Referent: Prof.\ Dr.\ Referent\\[0.5ex]
+Korreferent: Prof.\ Dr.\ Korreferent
+\end{textblock*}
+\rahmen
+\end{titlepage}
+
+\cleardoublepage

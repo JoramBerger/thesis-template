@@ -1,0 +1,31 @@
+\RequirePackage{pdf14}
+\documentclass[a4paper, BCOR=1cm]{scrbook}
+\input{header}
+
+\begin{document}
+%% \pagenumbering{alpha}
+%% \linenumbers
+%% \selectlanguage{ngerman}
+%% 	\include{title_de}
+%% 	\include{zusammenfassung}
+%% \pagenumbering{Roman}
+%% \resetlinenumber
+\frontmatter
+\selectlanguage{UKenglish}
+	\include{title}
+%	\include{quote}
+\mainmatter
+	\tableofcontents
+%	\include{introduction}
+%	\include{standardmodel}
+	\include{conclusion}
+\appendix
+%	\include{appendix}
+\backmatter
+	\listoffigures
+	\listoftables
+	\printbibliography[prenote=bibnote,heading=bibintoc]
+\selectlanguage{ngerman}
+%	\include{thanks}
+	\include{affirmation}
+\end{document}

@@ -1,0 +1,241 @@
+% $Id: numeric-joram.bbx,v 0.2 2010/07/12 17:18:00 berger beta $
+
+\ProvidesFile{numeric-joram.bbx}
+[\abx@bbxid $Id: numeric-joram.bbx,v 0.2 2010/07/12 17:18:00 berger beta $]
+
+\RequireBibliographyStyle{numeric-comp}
+
+\renewbibmacro{in:}{}
+% use commas instead of dots
+\renewcommand*{\newunitpunct}{\addcomma\space}
+% Do not print days in bibliography, only e.g. (Jan 2000)
+% Do not print the number of PASes
+\AtEveryBibitem{%
+  \ifentrytype{report}
+    {\clearfield{number}}
+    {}%
+\clearfield{day}
+\clearfield{month}
+}
+
+\DefineBibliographyStrings{english}{pages={}}
+
+% show only one of: eprint (arxiv, cern, iekp) and one of doi, isbn, url
+\renewbibmacro*{doi+eprint+url}[1]{%
+  \iffieldundef{doi}{%
+      \iffieldundef{url}{%
+        \iffieldundef{isbn}{%
+          \iffieldundef{issn}{%
+            #1%
+          }{%
+            \href{http://books.google.com/books?vid=ISSN\thefield{issn}}{#1}%
+          }%
+        }{%
+          \href{http://books.google.com/books?vid=ISBN\thefield{isbn}}{#1}%
+        }%
+      }{%
+        \iffieldundef{eprint}{\usebibmacro{url+urldate}}{}%
+      }%
+  }{%
+    \printfield{doi}%
+  }%
+  \iffieldequalstr{eprinttype}{arxiv}{%
+    \setunit{\addspace}%
+  }{%
+    \setunit{\addcomma\space}
+  }
+  \usebibmacro{eprint}
+}
+
+\renewbibmacro*{issue+date}{%
+  \printtext[parens]{%
+    \usebibmacro{date}%
+  }%
+\newunit}
+
+
+% Stick to arXiv standard rules
+\DeclareFieldFormat{eprint:arxiv}{%
+  \ifhyperref
+    {\mkbibbrackets{\href{http://arxiv.org/\abx@arxivpath/#1}{\nolinkurl{arXiv:#1}}}}%
+    {\mkbibbrackets{\nolinkurl{arXiv:#1}}}}%
+
+\DeclareFieldFormat{eprint:cern}{%
+  \iffieldundef{url}{%
+    \ifhyperref
+      {\href{http://cms-physics.web.cern.ch/cms-physics/public/#1-pas.pdf}{\nolinkurl{CMS-PAS-#1}}}
+      {\nolinkurl{CMS-PAS-#1}}
+  }{%
+    \ifhyperref
+      {\href{\thefield{url}}{\nolinkurl{#1}}}
+      {\nolinkurl{#1}}
+  }
+}
+
+\DeclareFieldFormat{eprint:pos}{%
+  \iffieldundef{url}{%
+    \ifhyperref
+      {\href{http:// http://pos.sissa.it}{\nolinkurl{#1}}}
+      {\nolinkurl{CMS-PAS-#1}}
+  }{%
+    \ifhyperref
+      {\href{\thefield{url}}{\nolinkurl{#1}}}
+      {\nolinkurl{#1}}
+  }
+}
+
+\DeclareFieldFormat{eprint:iekp}{%
+  \iffieldundef{url}{%
+    \ifhyperref
+      {\href{http://www-ekp.physik.uni-karlsruhe.de/pub/web/thesis/iekp-ka#1.pdf}%
+      {\nolinkurl{IEKP-KA/#1}}}
+      {\nolinkurl{IEKP-KA/#1}}
+  }{%
+    \ifhyperref
+      {\href{\thefield{url}}{\nolinkurl{IEKP-KA/#1}}}
+      {\nolinkurl{IEKP-KA/#1}}
+  }
+}
+
+\DeclareFieldFormat{isbn}{%
+  \iffieldundef{doi}{%
+  \textsc{isbn:}\addspace\href{http://books.google.com/books?vid=ISBN#1}{#1}}}
+
+\DeclareFieldFormat{issn}{%
+  \iffieldundef{doi}{%
+  \textsc{issn:}\addspace\href{http://books.google.com/books?vid=ISSN#1}{#1}}}
+
+\DeclareFieldFormat[article]{volume}{%
+  \mkbibbold{#1}}
+
+\DeclareFieldFormat[article]{issue}{%
+  \mkbibbold{#1}}
+
+%\DeclareFieldFormat[article]{date}{%
+%  \nopunct%
+%  \printtext[parens]{%
+%    \usebibmacro{date}%
+%  }%
+%}%
+
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+  \iffieldundef{series}
+    {}
+    {\newunit
+     \printfield{series}%
+     \setunit{\addspace}}%
+  \iffieldsequal{year}{volume}{%
+    \printfield{issue}%
+  }{%
+    \printfield{volume}%
+  }
+%  \iffieldequalstr{type}{jhep}{%
+%    
+%  }{%
+%  \iffieldequalstr{type}{jinst}{%
+%    
+%  }{%
+%  \iffieldequalstr{type}{prl}{%
+%    
+%  }{%else
+%    
+%  }}}
+%  
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addspace}%
+  \iffieldundef{eid}{%
+%    \iffieldundef{issue}{I\newunit{\addspace}}{%
+%      \printfield{issue}%
+%      \setunit*{\addcomma\space}%
+%    }
+    \printfield{pages}%
+  }{%
+    \printfield{eid}%
+  }%
+  \setunit{\addcomma\space}%
+  \newunit}
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{journal+issuetitle}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  %\newunit
+  %\usebibmacro{note+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{maintitle+booktitle}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
+  \newunit
+  \printfield{volumes}%
+  \newunit\newblock
+  %\usebibmacro{series+number}%
+  %\newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+
+\endinput

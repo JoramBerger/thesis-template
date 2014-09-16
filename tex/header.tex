@@ -1,0 +1,263 @@
+% Header - packages and settings for LaTeX
+% header.tex : 2010-03-24 Joram Berger
+
+% print: linkcolors black
+% online: linkcolors navy
+\newif\ifprintversion
+\printversionfalse
+
+\KOMAoptions{%
+	twoside=true,
+	headsepline=true,
+	BCOR=10mm,
+	fontsize=11pt,
+	listof=totoc,
+	numbers=noendperiod
+}
+\addtokomafont{caption}{\small}  %KOMA-Skript S. 144
+\addtokomafont{disposition}{\boldmath}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+\pagestyle{headings}
+\usepackage{scrhack} % make listings compatible with KOMA-script
+
+% Packages  ---------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+\usepackage[UKenglish, ngerman]{babel}% oder german %Deutsch
+\usepackage[babel=true, style=american, german=guillemets]{csquotes}
+\MakeAutoQuote{«}{»}
+\usepackage{textcomp}
+\usepackage{eurosym}
+\usepackage{microtype}  % before biblatex
+\usepackage{graphicx}
+\graphicspath{{../fig/}}
+\usepackage[intlimits]{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{soul}
+
+\DeclareSIUnit\clight{\ensuremath{c}}
+\DeclareSIUnit[per-mode=symbol]\GeVc{\GeV\per\clight}
+\DeclareSIUnit[per-mode=symbol]\GeVcc{\GeV\per\clight\squared}
+\DeclareSIUnit\fb{\femto\barn}
+\DeclareSIUnit\invfb{\per\femto\barn}
+
+% vor fixmath um aufrechte Großbuchstaben zu erhalten
+\let\upGamma\Gamma
+\let\upTheta\Theta
+\let\upLambda\Lambda
+\let\upXi\Xi
+\let\upPi\Pi
+\let\upSigma\Sigma
+\let\upUpsilon\Upsilon
+\let\upPhi\Phi
+\let\upPsi\Psi
+\usepackage{fixmath}	% für kursive griechische Großbuchstaben
+\usepackage{braket}
+\usepackage{cancel}
+\usepackage{slashed}
+\usepackage[
+style=numeric-joram,
+backend=biber,
+sorting=none,
+date=long,
+dateabbrev=true%
+]{biblatex} % vor hyperref
+\usepackage{tikz}
+\usepackage{rotating}
+\usepackage{fncychap}  % custom chapter titles
+\makeatletter
+	\ChNameVar{\centering\Large\sffamily}
+	\ChNumVar{\Large}
+	\ChTitleVar{\centering\LARGE\sffamily\bfseries}
+	\ChRuleWidth{1pt}
+
+	\renewcommand{\DOCH}{%
+		\CNV\FmN{\@chapapp}\space \CNoV\thechapter
+		\par\nobreak
+		\vskip -0.5\baselineskip
+	}
+	\renewcommand{\DOTI}[1]{%
+		\mghrulefill{\RW}\par\nobreak
+		\CTV\FmTi{#1}\par\nobreak
+		\vskip 40\p@
+	}
+	\renewcommand{\DOTIS}[1]{%
+		\mghrulefill{\RW}\par\nobreak
+		\CTV\FmTi{#1}\par\nobreak
+		\vskip -10\p@
+	}
+\makeatother
+
+\ifprintversion
+	\definecolor{internalColor}{HTML}{000000}
+	\definecolor{externalColor}{HTML}{000000}
+\else
+	\definecolor{internalColor}{HTML}{000080}
+	\definecolor{externalColor}{HTML}{0066AA}
+\fi
+\definecolor{commentColor}{HTML}{666666}
+\definecolor{listColor}{HTML}{EEEEEE}
+
+% Listings  ------------------------------------------------------------------
+\usepackage{listings}
+\lstloadlanguages{bash,[ISO]C++,make,Python,[LaTeX]TeX}
+
+\lstset{%language=[LaTeX]TeX,			% Sprache TeX
+	numbers=left,						% Zeilennummern links
+	stepnumber=1,						% jede Zeile
+	numbersep=5pt,						% 5pt vom Text
+	numberstyle=\tiny,					% kleine Zahlen
+	breaklines=true,					% Zeilenumbruch
+	breakautoindent=true, 				% mit Einrücken
+	postbreak=\space, 					% bei Leerzeichen umbrechen
+	tabsize=4,   						% Tabulatorlänge
+	basicstyle=\footnotesize\ttfamily,	% kleine tt-Schrift für Quelltext
+	keywordstyle=\bfseries\color{internalColor},% Schlüsselwörter fett (blau)
+% 	identifierstyle=\underbar ,			% Bezeichner unterstreichen
+	commentstyle=\color{commentColor},			% kommentar grau
+	stringstyle=\color{externalColor},		% String kursiv grün
+	showspaces=false,					% Leerzeichen nicht anzeigen
+	showstringspaces=false,				% nur in Strings
+	extendedchars=false,				% alle Zeichen anzeigen
+	backgroundcolor=\color{listColor},	% Hintergrundfarbe
+	captionpos=b,
+	frame=lines}						% Caption unten (bottom)
+
+\lstdefinelanguage{pythia}[ISO]{C++}{morecomment=[l]{!}}
+\lstdefinelanguage{herwig}{morecomment=[l]{\#},%
+morekeywords={cd,set,create,insert}}
+
+\usepackage[printonlyused, withpage, nohyperlinks]{acronym}
+%\usepackage[colorinlistoftodos, textwidth=2.6cm]{todonotes} % disable
+\newcommand{\todow}[1]{\todo[color=orange!60]{#1}}
+\newcommand{\todoe}[1]{\todo[color=red!80]{#1}}
+\newcommand{\todoi}[1]{\todo[color=green!10]{#1}}
+\usepackage[absolute]{textpos} % overlay
+\usepackage[pdfa,pdfversion=1.4]{hyperref} % nach biblatex TODO: mit pdfa GANZ NACH HINTEN
+\usepackage[all]{hypcap} % correct anchor point for float references
+\hypersetup{
+	%pdfusetitle
+	pdftitle={Title},
+	pdfauthor={Author},
+	pdfcreator={pdfLaTeX},
+	pdfsubject={Particle physics},
+	pdfkeywords={CERN, LHC, CMS, particle physics},
+	pdfpagemode=UseOutlines,% Inhaltsverzeichnis anzeigen beim Öffnen
+	pdfdisplaydoctitle=true,% Dokumenttitel statt Dateiname anzeigen.
+	pdflang=en,%Sprache des Dokuments.
+	colorlinks=true,linkcolor=internalColor,citecolor=internalColor,
+	filecolor=externalColor,menucolor=internalColor,urlcolor=externalColor,
+	plainpages=false,%
+	breaklinks=true%
+%	bookmarksnumbered=true%  Überschriftsnummerierung im PDF Inhalt anzeigen.
+}
+
+% math definitions
+\DeclareMathOperator\erf{erf}
+\DeclareMathOperator*{\median}{median}
+\newcommand{\bvec}[1]{\boldsymbol{#1}}
+\newcommand{\dx}{\mathrm{d}}
+\newcommand{\imag}{\mathrm{i}}
+\newcommand{\euler}{\mathrm{e}}
+
+% hep commands
+\newcommand{\pT}{\ensuremath{{p_\text{T}}}\xspace}
+\newcommand{\pt}[1]{\ensuremath{{p_\text{T}^\text{#1}}}}
+\newcommand{\vecpt}[1]{\ensuremath{{\vec{p}_\text{T}^\text{#1}}}}
+\newcommand{\pThat}[1]{\ensuremath{{\hat{p}_\text{T}^\text{#1}}}}
+\newcommand{\et}[1]{\ensuremath{{E_\text{T}^\text{#1}}}}
+\newcommand{\vecet}[1]{\ensuremath{{\vec{E}_\text{T}^\text{#1}}}\xspace}
+\newcommand{\Eqref}[1]{Eq.~\eqref{#1}}
+\newcommand{\lumi}{\ensuremath{L}}
+\newcommand{\met}{\ensuremath{{E_\text{T}^\text{miss}}}\xspace}
+\newcommand{\vmet}{\ensuremath{{\vec{E}_\text{T}^\text{miss}}}\xspace}
+\newcommand{\alphacut}{p_\mathrm{T}^\mathrm{jet_2} / p_\mathrm{T}^\mathrm{Z}}
+\newcommand{\alphacutfrac}{\frac{p_\mathrm{T}^\mathrm{jet_2}}{p_\mathrm{T}^\mathrm{Z}}}
+\newcommand{\akV}{Anti-$k_\mathrm{T}~0.5$\xspace}
+\newcommand{\ak}{Anti-$k_\mathrm{T}$\xspace}
+\newcommand{\kt}{$k_\mathrm{T}$\xspace}
+\newcommand{\pthat}{\hat{p}_{\mathrm{T}}}
+\newcommand{\ndof}{\ensuremath{n_\text{dof}}}
+\newcommand{\chindof}{\ensuremath{\chi^2/\ndof}}
+
+% software etc.
+\newcommand{\pythia}{\textsc{pythia}\xspace} %extra auslagern!
+\newcommand{\herwig}{\textsc{herwig++}\xspace}
+\newcommand{\thepeg}{{\footnotesize ThePEG}\xspace}
+\newcommand{\ROOT}{\textsc{root}\xspace}
+\newcommand{\matplotlib}{\textsc{matplotlib}\xspace}
+\newcommand{\lhapdf}{\textsc{lhapdf}\xspace}
+\newcommand{\fastjet}{\textsc{fastjet}\xspace}
+\newcommand{\powheg}{\textsc{powheg}\xspace}
+\newcommand{\madgraph}{\textsc{madgraph}\xspace}
+\newcommand{\minlo}{\textsc{minlo}\xspace}
+\newcommand{\amcnlo}{\textsc{amcnlo}\xspace}
+
+%\DeclareUnicodeCharacter{code}{\command}
+%\DeclareUnicodeCharacter{2248}{\approx}
+\DeclareUnicodeCharacter{221A}{\sqrt}
+%\DeclareUnicodeCharacter{222B}{\int}
+%\DeclareUnicodeCharacter{2211}{\sum}
+\DeclareUnicodeCharacter{2202}{\partial}
+%\DeclareUnicodeCharacter{2207}{\nabla}
+%\DeclareUnicodeCharacter{221E}{\infty}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03B2}{\ensuremath{\beta}}
+\DeclareUnicodeCharacter{03B3}{\ensuremath{\gamma}}
+\DeclareUnicodeCharacter{03B4}{\ensuremath{\delta}}
+\DeclareUnicodeCharacter{03F5}{\ensuremath{\epsilon}}
+\DeclareUnicodeCharacter{03B5}{\ensuremath{\varepsilon}}
+\DeclareUnicodeCharacter{03B6}{\ensuremath{\zeta}}
+\DeclareUnicodeCharacter{03B7}{\ensuremath{\eta}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03B9}{\ensuremath{\iota}}
+\DeclareUnicodeCharacter{03BA}{\ensuremath{\kappa}}
+\DeclareUnicodeCharacter{03BB}{\ensuremath{\lambda}}
+%\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{00B5}{\micro}
+\DeclareUnicodeCharacter{03BD}{\ensuremath{\nu}}
+\DeclareUnicodeCharacter{03BE}{\ensuremath{\xi}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{03C1}{\ensuremath{\varrho}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{03C4}{\ensuremath{\tau}}
+\DeclareUnicodeCharacter{03C5}{\ensuremath{\upsilon}}
+\DeclareUnicodeCharacter{03C6}{\ensuremath{\varphi}}
+\DeclareUnicodeCharacter{03D5}{\ensuremath{\phi}}
+\DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
+\DeclareUnicodeCharacter{03C8}{\ensuremath{\psi}}
+\DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+\DeclareUnicodeCharacter{0393}{\ensuremath{\varGamma}}
+\DeclareUnicodeCharacter{0394}{\ensuremath{\varDelta}}
+\DeclareUnicodeCharacter{0398}{\ensuremath{\varTheta}}
+%\DeclareUnicodeCharacter{039B}{\ensuremath{\varLambda}}
+%\DeclareUnicodeCharacter{039E}{\ensuremath{\varXi}}
+%\DeclareUnicodeCharacter{03A0}{\ensuremath{\varPi}}
+%\DeclareUnicodeCharacter{03A3}{\ensuremath{\varSigma}}
+%\DeclareUnicodeCharacter{03A5}{\ensuremath{\varUpsilon}}
+%\DeclareUnicodeCharacter{03A6}{\ensuremath{\varPhi}}
+%\DeclareUnicodeCharacter{03A8}{\ensuremath{\varPsi}}
+%\DeclareUnicodeCharacter{03A9}{\ensuremath{\varOmega}}
+\DeclareUnicodeCharacter{2206}{\ensuremath{\upDelta}}
+\DeclareUnicodeCharacter{221D}{\ensuremath{\propto}}% ∝
+\DeclareUnicodeCharacter{00B1}{\ensuremath{\pm}}    % ±
+\DeclareUnicodeCharacter{00B7}{\ensuremath{\cdot}}  % ·
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}} % ×
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}   % ≤
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}   % ≥
+\DeclareUnicodeCharacter{20AC}{\euro}
+\DeclareUnicodeCharacter{2260}{\ensuremath{\neq}}
+\DeclareUnicodeCharacter{2026}{\ldots}              % …
+\DeclareUnicodeCharacter{00B0}{\degree}
+
+%αβγδεζηθικλμνξοπρστυφχψωϑϕΓΔΘΛΞΠΣΥΦΨΩ ∆∂f∙∞√x∑a≈∫x– —
+
+\hyphenation{in-for-ma-tion}
+
+\bibliography{../bib/bibliography, ../bib/pas}
+
+\defbibnote{bibnote}{Text before bibliography.}
